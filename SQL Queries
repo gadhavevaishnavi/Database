@@ -1,0 +1,88 @@
+
+SQL-Queries
+-----------
+DDL -> CREATE,ALTER,DROP
+DML -> INSERT,UPDATE,DELETE
+DRL -> SELECT
+TCL -> COMMIT,ROLLBACK
+
+
+student
+---------
+
+id - primary key(not null + unique)
+f_name - not null
+l_name - not null
+dob - date(less than system date)
+address - string
+gender - M or F(default M)
+standard - int (value should be 1 to 10)
+email - string
+mobile - string(unique)
+
+create table student(
+id int primary key,
+f_name varchar(20) not null,
+l_name varchar(20) not null,
+dob date check(dob < sysdate()),
+address text,
+gender char(1) check(gender = 'M' or gender = 'F') default ('M'),
+standard int check(standard >= 1 and standard <=10),
+email varchar(20) unique,
+mobile varchar(10) not null unique
+);
+
+insert into student values(1,'Shubhangi','Kaikadi', '2002-11-23','Nagpur', 'F', 10, 'xyz@gmail.com', '7755953517');
+
+insert into student values(2,'snehal','Kaikadi', '2002-11-24','Nagpur', 'F', 9, 'xyz00@gmail.com', '7755953518');
+
+
+insert into student(id,f_name,l_name,mobile) values(3,'shubhangi','kaikadi','1234567890');
+
+insert into student(id,f_name,l_name,mobile,dob) values(4,'shubhangi','kaikadi','1234567891','2023-10-12');
+
+
+select * from student where dob = null;
+
+select * from student where dob is null;
+
+select * from student where dob is not null;
+
+select * from student where f_name like 'a%';
+
+select * from student where f_name not like 'a%';
+
+select * from student where f_name like '%i';
+
+select * from student where f_name not like '%i';
+
+select * from student where f_name like '_n%';
+
+select * from student where standard = 9 and standard = 10;
+
+select * from student where standard = 9 or standard = 10;
+
+select * from student where standard = 10 and email is null;
+
+select * from student where standard is null and email is null;
+
+select extract(year from sysdate());  
+
+select extract(month from sysdate());
+
+select extract(day from sysdate());  
+
+select id,f_name,l_name,extract(year from dob) - extract(year from sysdate()) from student;
+
+select id,f_name,l_name,extract(year from sysdate()) - extract(year from dob) as age from student;
+
+insert into student(id,f_name,l_name,mobile,dob) values(5,'vishal','chaudhary','1234567897','1982-10-12');
+
+insert into student(id,f_name,l_name,mobile,dob) values(6,'amol','johi','1234567899','1970-10-12');
+
+select id,f_name,l_name,extract(year from sysdate()) - extract(year from dob) as age from student order by dob;
+
+select id,f_name,l_name,extract(year from sysdate()) - extract(year from dob) as age from student order by dob desc;
+
+select id,f_name,l_name,extract(year from sysdate()) - extract(year from dob) as age from student order by dob desc limit 2;
+
