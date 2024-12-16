@@ -1,0 +1,62 @@
+
+What is a MySQL transaction?
+A MySQL transaction means a single unit of work, which includes one or more executed SQL statements. This ensures that either all of the operations are done or none, so as to preserve the integrity and consistency of data.
+
+
+------------------------------------------------
+START TRANSACTION or BEGIN start a new transaction.
+
+COMMIT commits the current transaction, making its changes permanent.
+
+ROLLBACK rolls back the current transaction, canceling its changes.
+
+SET autocommit disables or enables the default autocommit mode for the current session.
+
+/*
+START TRANSACTION
+    [transaction_characteristic [, transaction_characteristic] ...]
+
+transaction_characteristic: {
+    WITH CONSISTENT SNAPSHOT
+  | READ WRITE
+  | READ ONLY
+}
+
+BEGIN [WORK]
+COMMIT [WORK] [AND [NO] CHAIN] [[NO] RELEASE]
+ROLLBACK [WORK] [AND [NO] CHAIN] [[NO] RELEASE]
+SET autocommit = {0 | 1}
+*/
+
+------------------------------------------------
+
+To disable autocommit mode implicitly for a single series of statements, use the START TRANSACTION statement:
+/*
+START TRANSACTION;
+SELECT @A:=SUM(salary) FROM table1 WHERE type=1;
+UPDATE table2 SET summary=@A WHERE type=1;
+COMMIT;
+*/
+With START TRANSACTION, autocommit remains disabled until you end the transaction with COMMIT or ROLLBACK. The autocommit mode then reverts to its previous state.
+
+
+-------------------------------------
+
+*
+By default, MySQL runs with autocommit mode enabled. 
+
+To disable autocommit mode explicitly, use the following statement:
+
+
+-SET autocommit=0;
+--------------------------------------------------------
+*
+ restores the database to its state before the transaction started.
+
+ROLLBACK;
+
+*
+It makes all of the changes permanent and terminates the transaction.
+
+COMMIT;
+
